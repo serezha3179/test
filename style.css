@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    height: 100%;
+    overflow: hidden;
+}
+.page {
+    position: relative;
+    top: 0px;
+    width: 100%;
+    background: #000000 url('dust.png');
+}
+.items__inner {
+    position: relative;
+}
+.items__wrapper {
+    position: relative;
+    /* top: 568px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.item {
+    position: relative;
+    width: 15%;
+    padding-top: 15%;
+    margin-right: 5%;
+    background-color: rgba(255,255,255,0.5);
+}
+.item:last-child {
+    margin-right: 0;
+}
+.item:nth-child(1) {
+    top: 100px;
+    transform: rotate(0deg);
+}
+.item:nth-child(2) {
+    top: 200px;
+    transform: rotate(0deg);
+}
+.item:nth-child(3) {
+    top: 300px;
+    transform: rotate(0deg);
+}
