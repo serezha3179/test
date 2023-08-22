@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
     page.style.top = '0px';
     page.style.height = window.innerHeight + (window.innerHeight * 0.6) + 'px';
      for(let i = 0;i<squares.length;i++) {
-      squares[i].style.top = `${(i + 1)} * ${window.innerHeight / 6} + 'px'`;
+      squares[i].style.top = `${i + 1} * ${window.innerHeight * 0.6} + 'px'`;
     }
  
     window.addEventListener('wheel', pageMovement);
@@ -56,10 +56,10 @@ function pageMovement(e) {
                                                         //page down
                                                         
                     if(Math.sign(step) == 1) {   
-                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) >= window.innerHeight / 2 && squareRotate3 >= 0) {
+                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 1.9) >= window.innerHeight / 2 && squareRotate3 >= 0) {
                                 stop = true;
                             }
-                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) >= window.innerHeight / 2 && squareRotate1 == 0) {
+                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 1.9) >= window.innerHeight / 2 && squareRotate1 == 0) {
                                 stop = false;
                             }
                         if(page.getBoundingClientRect().y < 0 && stop == false) {
@@ -92,10 +92,12 @@ function pageMovement(e) {
                             if(parseInt(window.getComputedStyle(squares[i]).top) < itcorInit[i]) {
                                 squares[i].style.top = arr[i] + 'px';
                             } else {
+                             
                             }
                           }
                         }
                          step--;
+                         if(step == 0) clearInterval(pageDownInterval);
                         }
                       } else if(page.getBoundingClientRect().y < 0 && stop == true) {
                         if(step>=0) {
@@ -108,7 +110,7 @@ function pageMovement(e) {
                     }
                     }
       }, 18);
-    }, 50)
+    }, 10)
    
    }
    function pageMovesUp(step,pageDownInterval) {
@@ -125,10 +127,10 @@ let pageUpInterval = setInterval(function() {
                                                         //page up
                                                         
                   if(Math.sign(step) == -1) {
-                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) <= window.innerHeight / 2) {
+                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) <= window.innerHeight / 1.9) {
                                 stop = true;
                                 }
-                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) <= window.innerHeight / 2 && squareRotate3 == 90) {
+                            if(wrapperSquares.getBoundingClientRect().y + (parseInt(window.getComputedStyle(squares[0]).paddingTop) / 2) <= window.innerHeight / 1.9 && squareRotate3 == 90) {
                                 stop = false;
                             }
                         if(page.getBoundingClientRect().y + page.clientHeight - window.innerHeight > 0 && stop == false) {
@@ -155,13 +157,15 @@ let pageUpInterval = setInterval(function() {
                    
                           page.style.top = (pageStyleTop) + 'px';
                           wrapperSquares.style.top = wrapperStyleTop + 'px';
-                   
-                        for(let i = 0;i<squares.length;i++) {
+                          
+                            for(let i = 0;i<squares.length;i++) {
                           if(parseInt(window.getComputedStyle(squares[i]).top) > 0) {
                               squares[i].style.top = arr[i] + 'px';
                           }
+                        
                         }
-                        step++;
+                        ++step;
+                        if(step == 0) clearInterval(pageUpInterval);
                         }
                         
                       } else if(page.getBoundingClientRect().y + page.clientHeight - window.innerHeight > 0 && stop == true) {
@@ -170,7 +174,7 @@ let pageUpInterval = setInterval(function() {
                             step++;
                         }
                        }  else {
-                      clearInterval(pageUpInterval)
+                      clearInterval(pageUpInterval);
                       }
                     }
       }, 18);
@@ -240,7 +244,7 @@ let pageUpInterval = setInterval(function() {
       } else if(initMove - nextMove < 20) {
           pageMovesDown(10)
       }
-      return false;
+      // return false;
     }
                                               // TouchEvent
 
@@ -252,17 +256,18 @@ let pageUpInterval = setInterval(function() {
           initMove = e.changedTouches[0].clientY 
         }
         function touchEnd() {
-          page.removeEventListener('touchmove', touchMove)
-          page.removeEventListener('touchend', touchEnd)
+          window.removeEventListener('touchmove', touchMove)
+          window.removeEventListener('touchend', touchEnd)
         }
         function touchMove(e) {
           // e.preventDefault()
           nextMove = e.changedTouches[0].clientY;
-          if(initMove - nextMove > 20) {
-               pageMovesUp(-10)
-          } else if(initMove - nextMove < 20) {
-              pageMovesDown(10)
-          }
-        }       
-    
+      if(initMove.toFixed(0) - nextMove.toFixed(0) > 1 && nextMove.toFixed(0)%4 == 0) {
+          pageMovesUp(-30);
+   } else if(initMove.toFixed(0) - nextMove.toFixed(0) < 1 && nextMove.toFixed(0)%4 == 0) {
+       pageMovesDown(30)
+   }
+        }     
+
+
     })  // DOMContentLoaded
